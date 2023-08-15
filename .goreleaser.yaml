@@ -11,7 +11,7 @@ dockers:
     goos: linux
     goarch: amd64
     image_templates:
-      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-amd64"
     dockerfile: dockerfiles/Dockerfile.goreleaser
     build_flag_templates:
       - "--platform=linux/amd64"
@@ -25,7 +25,7 @@ dockers:
     goos: linux
     goarch: arm64
     image_templates:
-      - "ghcr.io/{{ .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-arm64"
+      - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-arm64"
     dockerfile: dockerfiles/Dockerfile.goreleaser
     build_flag_templates:
       - "--platform=linux/arm64"
@@ -37,10 +37,10 @@ dockers:
       - "--builder={{ .Env.DOCKER_CONTEXT }}"
 
 docker_manifests:
-- name_template: "ghcr.io/{{ .Env.GITHUB_REPOSITORY }}:{{ .Tag }}"
+- name_template: "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}"
   image_templates:
-    - "ghcr.io/{{ .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-amd64"
-    - "ghcr.io/{{ .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-arm64"
+    - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-amd64"
+    - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-arm64"
 
 docker_signs:
   - cmd: cosign
@@ -50,7 +50,7 @@ docker_signs:
     - "sign"
     - "--a"
     - "git_sha={{.FullCommit}}"
-    - "ghcr.io/{{ .Env.GITHUB_REPOSITORY }}@${digest}"
+    - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}@${digest}"
     - "--yes"
 
 before:
